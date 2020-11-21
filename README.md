@@ -1,7 +1,7 @@
 # UploadBox-A-cloud-storage-solution
 
-A simple cloud project using no other library than flask
-Technologies used are:-Python,Javascript,HTML & CSS
+A simple cloud storage FTP project using no other library than flask
+Technologies used are:-Python,Javascript(AJAX),HTML & CSS
 
 Features:-
 1. Users can login and register to their account(by default every user gets 500mb of data limit)
