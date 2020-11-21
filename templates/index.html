@@ -1,0 +1,55 @@
+ {% extends 'base.html '%}
+
+ {% block index %}
+      <div class="main-section">
+     
+      <div class="jumbotron text-center" style="background: transparent;">
+        <div><img src="{{url_for('static',filename='images/logo_transparent.png')}}" width="220" height="180"></div>
+        <h4 class="display-4 text-center">Welcome to the #1 Cloud Storage Solution</h4>
+        <p class="lead">A straightforward service that focuses on media storage and computing with the cheapest pricing and 24/7 availability</p>
+        <a class="btn btn-primary" href="{{url_for('pricing')}}">CHECK PLANS</a>
+      </div>
+ 
+       
+    
+      </div>
+
+      <div class="container mb-5">
+      <div class="row">
+        <div class="card col-sm-12 col-lg-4 text-center" >
+        <h4 class="text-center"><img src="{{url_for('static',filename='images/fast.png')}}" width="64" height="64"></h4> 
+         <h4 class="card-title text-center" >Fast</h3>
+         <div class="card-body">
+          <p class="lead">We use AI Algorithms to get the most out of the processing power</p>
+         </div>
+         <button class="btn btn-primary">READ MORE</button>
+        </div>
+
+        <div class="card col-sm-12 col-lg-4 text-center" >
+          <h4 class="text-center"><img src="{{url_for('static',filename='images/vertical-scalability.png')}}" width="64" height="64"></h4> 
+           <h4 class="card-title text-center">Scalable</h3>
+           <div class="card-body">
+            <p class="lead">Your storage can be scaled depending on your needs</p>
+           </div>
+           <button class="btn btn-primary">READ MORE</button>
+          </div>
+
+          <div class="card col-sm-12 col-lg-4 text-center" >
+            <h4 class="text-center"><img src="{{url_for('static',filename='images/24-hours.png')}}" width="64" height="64"></h4> 
+             <h4 class="card-title text-center" >24/7 Availability</h3>
+             <div class="card-body">
+              <p class="lead">24/7 availability and support for all our customers</p>
+             </div>
+             <button class="btn btn-primary">READ MORE</button>
+            </div>
+
+      </div>
+  
+
+
+      </div>
+
+
+
+
+{% endblock %}

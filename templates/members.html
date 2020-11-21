@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block members %}
+      <div class="container members">
+
+
+        <div class="login-box">
+          <div class="lb-header">
+            <a href="#" class="active" id="login-box-link">Login</a>
+            <a href="#" id="signup-box-link">Sign Up</a>
+          </div>
+          <div class="social-login">
+            <a href="#">
+              <i class="fa fa-facebook fa-lg"></i>
+              Login in with facebook
+            </a>
+            <a href="#">
+              <i class="fa fa-google-plus fa-lg"></i>
+              log in with Google
+            </a>
+          </div>
+          <form action="{{url_for('authUser')}}" method="POST" class="email-login">
+            <div class="u-form-group">
+              {{form.hidden_tag()}}
+              {{form.email(type="email",placeholder="Email",autocomplete="off")}}
+            </div>
+            <div class="u-form-group">
+              {{form.password(type="password",placeholder="Password",autocomplete="off")}}
+            </div>
+            <small class="text-danger">{{error}}</small>
+            <div class="u-form-group">
+              {{form.submit(id="form-button")}}
+            </div>
+            <div class="u-form-group">
+              <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+          </form>
+          <form action="#" method="POST" class="email-signup mb-4">
+            <div class="u-form-group">
+              {{rform.hidden_tag()}}
+              {{rform.email(type="email",placeholder="Email",autocomplete="off",id="inputEmail")}}
+            </div>
+            <div class="u-form-group">
+              {{rform.password(type="password",placeholder="Password",autocomplete="off",id="inputPassword")}}
+            </div>
+            <div class="u-form-group">
+              {{rform.cpassword(type="password",placeholder="confirm Password",autocomplete="off",id="inputPassword1")}}
+            </div>
+            <small class="text-muted" id="user-status"></small>
+            <div class="loader" style="display: none;"><img src="{{url_for('static',filename='images/2.gif')}}"></div>
+            
+            <div class="u-form-group">
+              {{rform.submit(id="form-button",class="registerBut")}}
+            </div>
+          
+          </form>
+        </div>
+      </div>
+
+      
+     
+
+    
+
+</body>
+<script src="script.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="jquery.min.js"></script>
+<script>
+  $(".email-signup").hide();
+$("#signup-box-link").click(function(){
+  $(".email-login").fadeOut(100);
+  $(".email-signup").delay(100).fadeIn(100);
+  $("#login-box-link").removeClass("active");
+  $("#signup-box-link").addClass("active");
+});
+$("#login-box-link").click(function(){
+  $(".email-login").delay(100).fadeIn(100);;
+  $(".email-signup").fadeOut(100);
+  $("#login-box-link").addClass("active");
+  $("#signup-box-link").removeClass("active");
+});
+
+
+document.querySelector(".registerBut").addEventListener("click",registerUser)
+function registerUser(e){
+  document.querySelector("#user-status").textContent="";
+  e.preventDefault();
+  document.querySelector(".loader").style.display="block";
+  var xhr=new XMLHttpRequest();
+
+  xhr.onload=function()
+  {
+    let response=JSON.parse(xhr.responseText);
+    { 
+        document.querySelector(".loader").style.display="none";
+        document.querySelector("#user-status").textContent=response['status'];
+    }
+  };
+  xhr.open('POST','/registerUser',true);
+  var email=(String)(document.querySelector('#inputEmail').value);
+  var pass=(String)(document.querySelector('#inputPassword').value);
+  var cpass=(String)(document.querySelector('#inputPassword1').value);
+  var request={'email':email,'password':pass,'cpassword':cpass};
+  xhr.setRequestHeader("Content-type","application/json");
+  xhr.send(JSON.stringify(request))
+  
+
+}
+
+
+
+</script> 
+</html>
+
+
+{% endblock %}

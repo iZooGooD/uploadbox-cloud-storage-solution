@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+
+{% block user %}
+
+    <div class="container mb-5">
+      <div class="jumbotron mt-2">
+        <h4 class="display-4">Welcome back,{{session['email']}}</h4>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4 d-flex align-items-stretch" >
+          <div class="card text-center">
+           <h4 class="card-header">My plan</h4>
+           <div class="card-body">
+            <p class="lead">You are currently on a {{plan_name}} plan</p> 
+           </div>
+          </div>
+          </div>
+
+          <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="card text-center">
+             <h4 class="card-header">Change Plan</h4>
+             <div class="card-body">
+              <p class="lead">Request a change plan</p> 
+<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+Change plan
+</button>
+             </div>
+            </div>
+         </div>
+
+
+         <div class="col-sm-4 d-flex align-items-stretch">
+           <div class="card text-center">
+            <h4 class="card-header">Cloud Usage</h4>
+            <div class="card-body">
+             <div class="c100 p{{plan_usage_percentage}} small">
+               <span>{{plan_usage_percentage}}%</span>
+               <div class="slice">
+                   <div class="bar"></div>
+                   <div class="fill"></div>
+               </div>
+           </div>
+           {% if plan_size==500 %}
+           <small class="text-muted">{{utilized_size}}mb of 500mb</p> 
+            {% elif plan_size==1000 %}
+             <small class="text-muted">{{utilized_size}}mb of 1GB</p> 
+            {% elif plan_size==5000 %}
+            <small class="text-muted">{{utilized_size}}mb of 5GB</p>
+            {% elif plan_size==10000 %}
+            <small class="text-muted">{{utilized_size}}mb of 10GB</p>
+              {% endif %}
+            
+            </div>
+           </div>
+          </div>
+
+
+      </div>
+
+
+      <div class="row mt-4">
+        <div class="card col-12 mb-5">
+          <h4 class="card-header text-center">MY FILE MANAGER</h4>
+        
+         
+           <table class="table table-striped">
+            <thead class="thead-dark">
+              <th>Filename</th>
+              <th>Filesize</th>
+              <th>Actions</th>
+            </thead>
+            <tbody class="actions">
+              {% for file in files %}
+              <tr>
+                <td>{{file[0]}}</td>
+                <td>{{file[1]+" mb"}}</td>
+                <td><div class="dropdown">
+                  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item text-danger" fname="{{file[0]}}" id="deleteFile" style="cursor: pointer;">Delete</a>
+                    <a class="dropdown-item text-primary" href="{{url_for('download_file',filename=file[0])}}">Download</a>
+                
+                  </div>
+                </div></td>
+              </tr>
+              {% endfor %}
+      
+            </tbody>
+
+           </table>
+           
+  
+         
+  
+        
+         <form action="#">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile" name="file">
+            <label class="custom-file-label" for="customFile" id="fname">Choose file</label>
+          </div>
+         
+        </form>
+        <small class="text-success my-3 text-center"  id="user-status" ></small>
+        <div class="loader text-center" style="display: none;"><img src="{{url_for('static',filename='images/2.gif')}}"></div>
+        <button class="btn btn-primary btn-sm my-3" id="inputFile" >UPLOAD</button>
+        
+        </div>
+  
+      </div>
+
+
+
+    </div>
+
+
+
+ <!--- Modal   -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Please select your plan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="plans" id="exampleRadios1" value="free">
+          <label class="form-check-label" for="exampleRadios1">
+            Free plan - 500mb 
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="plans" id="exampleRadios2" value="pro">
+          <label class="form-check-label" for="exampleRadios2">
+            Pro plan - 1GB @ 70 &#8377
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="plans" id="exampleRadios3" value="gold">
+          <label class="form-check-label" for="exampleRadios3">
+            Gold plan - 5GB @ 300 &#8377
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="plans" id="exampleRadios3" value="platinum">
+          <label class="form-check-label" for="exampleRadios3">
+           Plantinum plan - 10GB @ 500 &#8377
+          </label>
+        </div>
+      </div>
+      <p class="text-success" id="status_plan"></p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="pchangeButton">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- end modal-->
+
+
+
+
+
+
+    <script>
+      document.querySelector("#customFile").addEventListener("change",showFileName);
+      function showFileName(){
+        var file_name=document.querySelector("#customFile").files[0].name
+   
+        document.querySelector("#fname").textContent="Selected file: "+file_name;
+
+
+
+      }
+
+
+
+
+      function reload_page(){
+        window.location.reload();
+      }
+      document.querySelector("#inputFile").addEventListener("click",uploadFile)
+      
+      function uploadFile(){
+        document.querySelector("#user-status").textContent="";
+        document.querySelector(".loader").style.display="block";
+      fd = new FormData();
+      var file_data=document.getElementById("customFile").files[0];  
+      var f_size=document.getElementById("customFile").files[0].size;  
+      var xhr=new XMLHttpRequest();
+
+xhr.onload=function()
+{
+  let response=JSON.parse(xhr.responseText);
+  { 
+    document.querySelector(".loader").style.display="none";
+    if(response['status']=="Limit crossed"){
+      document.querySelector("#user-status").style.fontSize="1.3rem";
+    document.querySelector("#user-status").textContent="You have reached your storage limit,please upgrade your plan."
+    
+
+    }
+    else{
+    document.querySelector("#user-status").textContent=response['status'];
+    setTimeout(reload_page,2000)
+    }
+  }
+};
+fd.append('file',file_data);
+fd.append('f_size',f_size);
+xhr.open('POST','/uploadFile',true);
+
+
+xhr.send(fd)
+
+
+      
+      }
+
+
+document.querySelector(".actions").addEventListener("click",requestDelete)
+function requestDelete(e){
+if(e.target.id=="deleteFile")
+{
+console.log("I deleting")
+var xhr=new XMLHttpRequest();
+
+xhr.onload=function()
+{
+  let response=JSON.parse(xhr.responseText);
+  { 
+   document.querySelector("#user-status").textContent=response['status'];
+   setTimeout(reload_page,2000);
+  }
+};
+xhr.open('POST','/deletefile',true);
+var fname=(String)(e.target.getAttribute('fname'));
+var request={'filename':fname};
+xhr.setRequestHeader("Content-type","application/json");
+xhr.send(JSON.stringify(request))
+}
+}
+
+
+
+
+document.querySelector("#pchangeButton").addEventListener("click",requestDelete)
+function requestDelete(e){
+
+console.log("I deleting")
+var xhr=new XMLHttpRequest();
+
+xhr.onload=function()
+{
+  let response=JSON.parse(xhr.responseText);
+  { 
+   document.querySelector("#status_plan").textContent=response['status'];
+   setTimeout(reload_page,2000);
+  }
+};
+xhr.open('POST','/changePlan',true);
+var plans = document.getElementsByName('plans');
+var plan_name;
+for(var i = 0; i < plans.length; i++){
+    if(plans[i].checked){
+        plan_name = plans[i].value;
+    }
+}
+var request={'plan_name':plan_name};
+xhr.setRequestHeader("Content-type","application/json");
+xhr.send(JSON.stringify(request))
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      
+      </script>
+      
+
+      
+{% endblock %}
+
+
+
+
+      
+   
+     
+
+    
+
+
+
