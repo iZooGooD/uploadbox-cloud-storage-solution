@@ -3,68 +3,93 @@
 {% block user %}
 
     <div class="container mb-5">
-      <div class="jumbotron mt-2">
-        <h4 class="display-4">Welcome back,{{session['email']}}</h4>
+      <div class="row">
+      <div class="col-sm-12 jumbotron mt-2">
+        <h4 class="text-dark text-center">Welcome back,<br>{{session['email']}}</h4>
+      </div>
       </div>
 
       <div class="row">
 
-        <div class="col-lg-4 d-flex align-items-stretch" >
-          <div class="card text-center">
-           <h4 class="card-header">My plan</h4>
-           <div class="card-body">
-            <p class="lead">You are currently on a {{plan_name}} plan</p> 
-           </div>
-          </div>
-          </div>
 
-          <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="col-sm-12 col-lg-4 ">
+          <div class="card-deck">
+            <!-- 4 of these -->
             <div class="card text-center">
-             <h4 class="card-header">Change Plan</h4>
-             <div class="card-body">
-              <p class="lead">Request a change plan</p> 
-<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
-Change plan
-</button>
-             </div>
+              <h4 class="card-header bg-warning text-light">My plan</h4>
+              
+               <div class="card-body">
+                <p class="lead">You are currently on a {{plan_name}} plan</p> 
+               </div>
             </div>
+          </div>
          </div>
 
 
-         <div class="col-sm-4 d-flex align-items-stretch">
-           <div class="card text-center">
-            <h4 class="card-header">Cloud Usage</h4>
-            <div class="card-body">
-             <div class="c100 p{{plan_usage_percentage}} small">
-               <span>{{plan_usage_percentage}}%</span>
-               <div class="slice">
-                   <div class="bar"></div>
-                   <div class="fill"></div>
+
+         <div class="col-sm-12 col-lg-4">
+          <div class="card-deck">
+            <!-- 4 of these -->
+            <div class="card text-center">
+              <h4 class="card-header bg-primary text-light">Change Plan</h4>
+         
+               <div class="card-body">
+                <p class="lead">Request a change plan</p> 
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                  Change plan
+                  </button>
                </div>
-           </div>
-           {% if plan_size==500 %}
-           <small class="text-muted">{{utilized_size}}mb of 500mb</p> 
-            {% elif plan_size==1000 %}
-             <small class="text-muted">{{utilized_size}}mb of 1GB</p> 
-            {% elif plan_size==5000 %}
-            <small class="text-muted">{{utilized_size}}mb of 5GB</p>
-            {% elif plan_size==10000 %}
-            <small class="text-muted">{{utilized_size}}mb of 10GB</p>
-              {% endif %}
-            
             </div>
-           </div>
           </div>
+         </div>
 
 
+    
+
+
+         <div class="col-sm-12 col-lg-4">
+          <div class="card-deck">
+            <!-- 4 of these -->
+            <div class="card text-center">
+              <h4 class="card-header bg-info text-light">Cloud Usage</h4>
+            
+               <div class="card-body">
+                <div class="c100 p{{plan_usage_percentage}} small card-img-top img-adjusted">
+                  <span>{{plan_usage_percentage}}%</span>
+                  <div class="slice">
+                      <div class="bar"></div>
+                      <div class="fill"></div>
+                  </div>
+              </div>
+              {% if plan_size==500 %}
+              <small class="text-muted">{{utilized_size}}mb of 500mb</p> 
+               {% elif plan_size==1000 %}
+                <small class="text-muted">{{utilized_size}}mb of 1GB</p> 
+               {% elif plan_size==5000 %}
+               <small class="text-muted">{{utilized_size}}mb of 5GB</p>
+               {% elif plan_size==10000 %}
+               <small class="text-muted">{{utilized_size}}mb of 10GB</p>
+                 {% endif %}
+               
+               </div>
+            </div>
+          </div>
+         </div>
       </div>
+
+
+
+
 
 
       <div class="row mt-4">
         <div class="card col-12 mb-5">
           <h4 class="card-header text-center">MY FILE MANAGER</h4>
-        
-         
+            {% if (files|length)==0 %} 
+           <p class="lead text-center p-5">You have no files. Upload your files by clicking the browse button below</p>
+           {% else %}
+
+
            <table class="table table-striped">
             <thead class="thead-dark">
               <th>Filename</th>
@@ -92,6 +117,7 @@ Change plan
             </tbody>
 
            </table>
+           {% endif %}
            
   
          
@@ -158,10 +184,39 @@ Change plan
       <p class="text-success" id="status_plan"></p>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="pchangeButton">Save changes</button>
+        <button  class="btn btn-primary" id="pChange">Save changes</button>
       </div>
     </div>
   </div>
+  <script>
+    document.querySelector("#pChange").addEventListener("click",changePlan)
+function changePlan(e){
+
+console.log("changing plan");
+var xhr=new XMLHttpRequest();
+
+xhr.onload=function()
+{
+  let response=JSON.parse(xhr.responseText);
+  { 
+   document.querySelector("#status_plan").textContent=response['status'];
+   setTimeout(reload_page,2000);
+  }
+};
+xhr.open('POST','/changePlan',true);
+var plans = document.getElementsByName('plans');
+var plan_name;
+for(var i = 0; i < plans.length; i++){
+    if(plans[i].checked){
+        plan_name = plans[i].value;
+    }
+}
+var request={'plan_name':plan_name};
+xhr.setRequestHeader("Content-type","application/json");
+xhr.send(JSON.stringify(request))
+
+}
+  </script>
 </div>
 
  <!-- end modal-->
@@ -252,32 +307,6 @@ xhr.send(JSON.stringify(request))
 
 
 
-document.querySelector("#pchangeButton").addEventListener("click",changePlan)
-function changePlan(e){
-
-var xhr=new XMLHttpRequest();
-
-xhr.onload=function()
-{
-  let response=JSON.parse(xhr.responseText);
-  { 
-   document.querySelector("#status_plan").textContent=response['status'];
-   setTimeout(reload_page,2000);
-  }
-};
-xhr.open('POST','/changePlan',true);
-var plans = document.getElementsByName('plans');
-var plan_name;
-for(var i = 0; i < plans.length; i++){
-    if(plans[i].checked){
-        plan_name = plans[i].value;
-    }
-}
-var request={'plan_name':plan_name};
-xhr.setRequestHeader("Content-type","application/json");
-xhr.send(JSON.stringify(request))
-
-}
 
 
 
@@ -299,7 +328,8 @@ xhr.send(JSON.stringify(request))
 
 
 
-      
+
+    
       
       </script>
       
