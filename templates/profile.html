@@ -81,7 +81,7 @@ Change plan
                     Actions
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item text-danger" fname="{{file[0]}}" id="deleteFile" style="cursor: pointer;">Delete</a>
+                    <a class="dropdown-item text-danger" fname="{{file[0]}}" id="delFile" style="cursor: pointer;">Delete</a>
                     <a class="dropdown-item text-primary" href="{{url_for('download_file',filename=file[0])}}">Download</a>
                 
                   </div>
@@ -229,9 +229,8 @@ xhr.send(fd)
 
 document.querySelector(".actions").addEventListener("click",requestDelete)
 function requestDelete(e){
-if(e.target.id=="deleteFile")
+if(e.target.id=="delFile")
 {
-console.log("I deleting")
 var xhr=new XMLHttpRequest();
 
 xhr.onload=function()
@@ -253,10 +252,9 @@ xhr.send(JSON.stringify(request))
 
 
 
-document.querySelector("#pchangeButton").addEventListener("click",requestDelete)
-function requestDelete(e){
+document.querySelector("#pchangeButton").addEventListener("click",changePlan)
+function changePlan(e){
 
-console.log("I deleting")
 var xhr=new XMLHttpRequest();
 
 xhr.onload=function()
