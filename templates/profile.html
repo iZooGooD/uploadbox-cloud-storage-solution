@@ -2,10 +2,11 @@
 
 {% block user %}
 
-    <div class="container mb-5">
+
+    <div class="container mb-5 upanel">
       <div class="row">
-      <div class="col-sm-12 jumbotron mt-2">
-        <h4 class="text-dark text-center">Welcome back,<br>{{session['email']}}</h4>
+      <div class="col-sm-12 jumbotron mt-2 " style="background: transparent; background-image:  url('https://images.unsplash.com/photo-1561736778-92e52a7769ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80'); background-size: cover;" id="jm">
+        <h4 class="text-info text-center">Welcome back,<br>{{session['email']}}</h4>
       </div>
       </div>
 
@@ -90,7 +91,7 @@
            {% else %}
 
 
-           <table class="table table-striped">
+           <table class="table table-striped table-responsive-sm">
             <thead class="thead-dark">
               <th>Filename</th>
               <th>Filesize</th>
@@ -101,16 +102,12 @@
               <tr>
                 <td>{{file[0]}}</td>
                 <td>{{file[1]+" mb"}}</td>
-                <td><div class="dropdown">
-                  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Actions
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item text-danger" fname="{{file[0]}}" id="delFile" style="cursor: pointer;">Delete</a>
-                    <a class="dropdown-item text-primary" href="{{url_for('download_file',filename=file[0])}}">Download</a>
+                <td>
+                <img  id="dfile" fname="{{file[0]}}" data-toggle="tooltip" data-placement="top" title="Download file" src="{{url_for('static',filename='images/download.png')}}" style="cursor: pointer;">  <img fname="{{file[0]}}" data-toggle="tooltip" data-placement="top" title="Delete file" id="delFile" style="cursor: pointer;" src="{{url_for('static',filename='images/delete2.png')}}">
                 
-                  </div>
-                </div></td>
+                 
+                
+                  </td>
               </tr>
               {% endfor %}
       
@@ -304,6 +301,11 @@ xhr.send(JSON.stringify(request))
 }
 }
 
+
+document.querySelector("#dfile").addEventListener("click",download_file)
+function download_file(e){
+  window.location.href="/downloadfile/"+e.target.getAttribute('fname');
+}
 
 
 
