@@ -1,18 +1,41 @@
  {% extends 'base.html '%}
 
  {% block index %}
+  <style>
+  .readmore_button {
+    border: none;
+    border-radius: 14px;
+    background-color: rgb(39,139,160);
+    text-decoration: none;
+    color:white;
+    padding:10px;
+    transition: ease-in 0.3s;
+    font-weight: 400;
+
+  }
+  .readmore_button:hover{
+    text-decoration: none;
+    background-color: #fff;
+    padding-right:40px;
+    color:rgb(42,45,46);
+  }
+
+
+  </style>
+
       <div class="main-section">
      
       <div class="jumbotron text-center" style="background: transparent;">
         <div><img src="{{url_for('static',filename='images/logo_transparent.png')}}" width="220" height="180"></div>
         <h4 class="display-4 text-center">Welcome to the #1 Cloud Storage Solution</h4>
         <p class="lead">A straightforward service that focuses on media storage and computing with the cheapest pricing and 24/7 availability</p>
-        <a class="btn btn-primary" href="{{url_for('pricing')}}">CHECK PLANS</a>
+        <a class="readmore_button" href="{{url_for('pricing')}}">CHECK PLANS</a>
       </div>
  
        
     
-      </div>
+      </div> 
+    
 
       <div class="container mb-5">
       <div class="row">
