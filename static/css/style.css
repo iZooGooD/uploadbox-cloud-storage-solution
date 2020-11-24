@@ -6,7 +6,7 @@ ul li a {
     transition: ease-in 0.3s;
 }
 ul li a:hover {
-    border-bottom: 4px solid white;
+    border-bottom: 1px solid white;
 
 }
 .main-section{
