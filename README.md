@@ -1,14 +1,26 @@
-# UploadBox-A-cloud-storage-solution
+# UploadBox: A Cloud Storage Solution
 
-A simple cloud storage FTP project using no other library than flask
-- Technologies used are:-Python,Javascript(AJAX),HTML & CSS
-- Live preview http://izoogood.pythonanywhere.com/
+UploadBox is a simple cloud storage FTP project developed using Flask, with no additional libraries. It leverages the following technologies: Python, JavaScript (AJAX), HTML, and CSS.
 
-Features:-
-1. Users can login and register to their account(by default every user gets 500mb of data limit)
-2. Clean user dashboard,all details like utilized limit and plans are their at one place
-3. A file manager to add/delete/upload files or download their uploaded files..
-4. A feature to change their plan size from free(500mb),gold(1gb) and so on.
-5. File limits - once the user hits the specified limit, the user will see a message to upgrade their plan.
+## Features
 
+1. **User Authentication**
+   - Users can register and log in to their accounts. Each user is allotted 500MB of storage by default.
 
+2. **Dashboard**
+   - A clean and intuitive user dashboard displays all essential details, including utilized storage and available plans.
+
+3. **File Management**
+   - A comprehensive file manager allows users to add, delete, upload, and download files with ease.
+
+4. **Plan Customization**
+   - Users can upgrade their storage plan from the free 500MB tier to higher options, such as the Gold plan with 1GB of storage, and more.
+
+5. **Storage Limits**
+   - Once users reach their storage limit, they will receive a prompt to upgrade their plan.
+
+## Technologies Used
+
+- **Python**
+- **JavaScript (AJAX + JQUERY)**
+- **HTML CSS**
